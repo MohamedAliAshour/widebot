@@ -35,6 +35,30 @@ namespace Services.Services
             }).ToListAsync();
         }
 
+        public async Task<List<GetArticlesViewModel>> GetWithFilltering(string? filterOn = null, string? filterQuery = null)
+        {
+            var articles = _context.Articles.Select(a => new GetArticlesViewModel
+            {
+                Id = a.Id,
+                Title = a.Title,
+                Content = a.Content,
+                PublishedDate = a.PublishedDate,
+                Tags = a.Tags
+            }).AsQueryable();
+
+            // Filtering
+            if (!string.IsNullOrWhiteSpace(filterOn) && !string.IsNullOrWhiteSpace(filterQuery))
+            {
+                if (filterOn.Equals("Title", StringComparison.OrdinalIgnoreCase))
+                {
+                    articles = articles.Where(a => a.Title.Contains(filterQuery));
+                }
+            }
+
+            return await articles.ToListAsync();
+        }
+
+
 
         public async Task<SaveArticlesViewModel> GetDetailsById(int id)
         {

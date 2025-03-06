@@ -13,6 +13,7 @@ namespace Interfaces.interfaces
     public interface IArticlecs : ICoreBase
     {
         Task<List<GetArticlesViewModel>> GetAll();
+        Task<List<GetArticlesViewModel>> GetWithFilltering(string? fillterOn = null, string? fillterQuery = null);
         Task<SaveArticlesViewModel> Add(SaveArticlesViewModel model);
         Task<bool> Update(SaveArticlesViewModel model, int id);
         Task<bool> Delete(int id);

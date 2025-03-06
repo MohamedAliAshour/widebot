@@ -24,10 +24,19 @@ namespace widebot.Controllers
         }
 
         // Get all articles
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<GetArticlesViewModel>>> GetArticles()
         {
             var articles = await _articleService.GetAll();
+            return Ok(articles);
+
+        }
+
+        // Get all articles With Fillter
+        [HttpGet("GetWithFiltering")]
+        public async Task<ActionResult<IEnumerable<GetArticlesViewModel>>> GetArticlesWithFilltering([FromQuery] string? fillterOn, [FromQuery] string? fillterQuery)
+        {
+            var articles = await _articleService.GetWithFilltering(fillterOn, fillterQuery);
             return Ok(articles);
 
         }
