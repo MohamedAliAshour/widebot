@@ -41,31 +41,18 @@ namespace Services.Services
             var article = await _context.Articles.FindAsync(id);
             if (article == null) return null;
 
-            return new SaveArticlesViewModel
-            {
-                Id = article.Id,
-                Title = article.Title,
-                Content = article.Content,
-                PublishedDate = article.PublishedDate,
-                Tags = article.Tags
-            };
+            return ObjectMapper.Mapper.Map<SaveArticlesViewModel>(article);
         }
 
         public async Task<SaveArticlesViewModel> Add(SaveArticlesViewModel model)
         {
-            var article = new Article
-            {
-                Title = model.Title,
-                Content = model.Content,
-                PublishedDate = model.PublishedDate,
-                Tags = model.Tags
-            };
+            var article = ObjectMapper.Mapper.Map<Article>(model);
+            article.PublishedDate = DateTime.UtcNow;
 
             _context.Articles.Add(article);
             await _context.SaveChangesAsync();
 
-            model.Id = article.Id;
-            return model;
+            return ObjectMapper.Mapper.Map<SaveArticlesViewModel>(article);
         }
 
         public async Task<bool> Update(SaveArticlesViewModel model, int id)
@@ -73,11 +60,7 @@ namespace Services.Services
             var article = await _context.Articles.FindAsync(id);
             if (article == null) return false;
 
-            article.Title = model.Title;
-            article.Content = model.Content;
-            article.PublishedDate = model.PublishedDate;
-            article.Tags = model.Tags;
-
+            article = ObjectMapper.Mapper.Map(model, article);
             await _context.SaveChangesAsync();
             return true;
         }

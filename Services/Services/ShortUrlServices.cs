@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Interfaces.Helpers;
 using Interfaces.interfaces;
 using Interfaces.ViewModels.ShortUrlVM;
 using Microsoft.EntityFrameworkCore;
@@ -26,36 +27,21 @@ namespace Services.Services
             var shortCode = Guid.NewGuid().ToString("N").Substring(0, 6); // Generates a 6-character code
             var fullShortUrl = $"{BaseUrl}{shortCode}"; // Construct the full short URL
 
-            var shortUrl = new ShortUrl
-            {
-                LongUrl = model.LongUrl,
-                ShortCode = shortCode, // Save only the shortcode separately
-                ShortUrl1 = fullShortUrl, // Save full short URL
-                CreatedAt = DateTime.UtcNow
-            };
+            var shortUrl = ObjectMapper.Mapper.Map<ShortUrl>(model);
+            shortUrl.ShortCode = shortCode;
+            shortUrl.ShortUrl1 = fullShortUrl;
+            shortUrl.CreatedAt = DateTime.UtcNow;
 
             _context.ShortUrls.Add(shortUrl);
             await _context.SaveChangesAsync();
 
-            // Return the newly created data with the full shortened URL
-            return new SaveShortUrlViewModel
-            {
-                LongUrl = shortUrl.LongUrl,
-                ShortCode = shortUrl.ShortCode, // Include the short code in response
-                ShortUrl1 = shortUrl.ShortUrl1 // Full shortened URL
-            };
+            return ObjectMapper.Mapper.Map<SaveShortUrlViewModel>(shortUrl);
         }
 
         public async Task<List<GetShortUrlViewModel>> GetAll()
         {
-            return await _context.ShortUrls.Select(s => new GetShortUrlViewModel
-            {
-                Id = s.Id,
-                LongUrl = s.LongUrl,
-                ShortCode = s.ShortCode, // Include short code
-                ShortUrl1 = s.ShortUrl1, // Full shortened URL
-                CreatedAt = s.CreatedAt
-            }).ToListAsync();
+            var shortUrls = await _context.ShortUrls.ToListAsync();
+            return ObjectMapper.Mapper.Map<List<GetShortUrlViewModel>>(shortUrls);
         }
 
         public async Task<bool> Delete(int id)

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entities.Models;
 using Interfaces.ViewModels.ArticleVM;
+using Interfaces.ViewModels.ShortUrlVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,9 +47,14 @@ namespace Interfaces.Helpers
 
             CreateMap<Article, GetArticlesViewModel>()
                 .ReverseMap();
-            CreateMap<Article, GetShortUrlWithPaginationViewModel>().ReverseMap();
+            CreateMap<Article, GetArticlesWithPaginationViewModel>().ReverseMap();
             CreateMap<Article, SaveArticlesViewModel>().ReverseMap();
 
+
+            CreateMap<ShortUrl, GetShortUrlViewModel>()
+              .ReverseMap();
+            CreateMap<ShortUrl, GetShortUrlWithPaginationViewModel>().ReverseMap();
+            CreateMap<ShortUrl, SaveShortUrlViewModel>().ReverseMap();
 
 
         }

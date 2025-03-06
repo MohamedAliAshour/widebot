@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Interfaces.ViewModels.ArticleVM
 {
-    public class GetShortUrlWithPaginationViewModel
+    public class GetArticlesWithPaginationViewModel
     {
         public int Id { get; set; }
 
