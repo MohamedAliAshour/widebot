@@ -1,4 +1,5 @@
-﻿using Interfaces.Helpers;
+﻿using Interfaces.Helper;
+using Interfaces.Helpers;
 using Interfaces.interfaces;
 using Interfaces.ViewModels.ArticleVM;
 using Microsoft.AspNetCore.Http;
@@ -6,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Services.Model;
 using Services.Services;
+using System.ComponentModel.DataAnnotations;
+
 
 
 namespace widebot.Controllers
@@ -34,7 +37,7 @@ namespace widebot.Controllers
 
         // Get all articles With Fillter
         [HttpGet("GetWithFiltering")]
-        public async Task<ActionResult<IEnumerable<GetArticlesViewModel>>> GetArticlesWithFilltering([FromQuery] string? fillterOn, [FromQuery] string? fillterQuery)
+        public async Task<ActionResult<IEnumerable<GetArticlesViewModel>>> GetArticlesWithFilltering([FromQuery] string fillterOn, [FromQuery] string fillterQuery)
         {
             var articles = await _articleService.GetWithFilltering(fillterOn, fillterQuery);
             return Ok(articles);
@@ -55,6 +58,7 @@ namespace widebot.Controllers
 
         // Create a new article
         [HttpPost]
+        [ValidationModel]
         public async Task<ActionResult<SaveArticlesViewModel>> CreateArticle(SaveArticlesViewModel model)
         {
             var createdArticle = await _articleService.Add(model);

@@ -35,7 +35,7 @@ namespace Services.Services
             }).ToListAsync();
         }
 
-        public async Task<List<GetArticlesViewModel>> GetWithFilltering(string? filterOn = null, string? filterQuery = null)
+        public async Task<List<GetArticlesViewModel>> GetWithFilltering(string filterOn, string filterQuery)
         {
             var articles = _context.Articles.Select(a => new GetArticlesViewModel
             {
