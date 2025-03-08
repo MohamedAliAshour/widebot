@@ -37,25 +37,36 @@ namespace Services.Services
 
         public async Task<List<GetArticlesViewModel>> GetWithFilltering(string filterOn, string filterQuery)
         {
-            var articles = _context.Articles.Select(a => new GetArticlesViewModel
+            var articles = _context.Articles.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(filterOn) && !string.IsNullOrWhiteSpace(filterQuery) && filterOn.Equals("Title", StringComparison.OrdinalIgnoreCase))
+            {
+                articles = articles.Where(a => a.Title.Contains(filterQuery));
+            }
+
+            return await articles.Select(a => new GetArticlesViewModel
             {
                 Id = a.Id,
                 Title = a.Title,
                 Content = a.Content,
                 PublishedDate = a.PublishedDate,
                 Tags = a.Tags
-            }).AsQueryable();
+            }).ToListAsync();
+        }
 
-            // Filtering
-            if (!string.IsNullOrWhiteSpace(filterOn) && !string.IsNullOrWhiteSpace(filterQuery))
+
+        public async Task<PagedList<GetArticlesWithPaginationViewModel>> GetArticlesWithPagination(int pageNumber, int pageSize)
+        {
+            var query = _context.Articles.Select(a => new GetArticlesWithPaginationViewModel
             {
-                if (filterOn.Equals("Title", StringComparison.OrdinalIgnoreCase))
-                {
-                    articles = articles.Where(a => a.Title.Contains(filterQuery));
-                }
-            }
+                Id = a.Id,
+                Title = a.Title,
+                Content = a.Content,
+                PublishedDate = a.PublishedDate,
+                Tags = a.Tags
+            });
 
-            return await articles.ToListAsync();
+            return await PagedList<GetArticlesWithPaginationViewModel>.CreateAsync(query, pageNumber, pageSize);
         }
 
 

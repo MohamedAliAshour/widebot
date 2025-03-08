@@ -44,6 +44,22 @@ namespace widebot.Controllers
 
         }
 
+        [HttpGet("GetWithPagination")]
+        public async Task<ActionResult<PagedList<GetArticlesWithPaginationViewModel>>> GetArticlesWithPagination([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        {
+            var pagedArticles = await _articleService.GetArticlesWithPagination(pageNumber, pageSize);
+
+            return Ok(new
+            {
+                pagedArticles.CurrentPage,
+                pagedArticles.TotalPages,
+                pagedArticles.PageSize,
+                pagedArticles.TotalCount,
+                Data = pagedArticles
+            });
+        }
+
+
         // Get a single article by ID
         [HttpGet("{id}")]
         public async Task<ActionResult<SaveArticlesViewModel>> GetArticle(int id)

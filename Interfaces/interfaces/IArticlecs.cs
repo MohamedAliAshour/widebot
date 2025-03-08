@@ -14,6 +14,7 @@ namespace Interfaces.interfaces
     {
         Task<List<GetArticlesViewModel>> GetAll();
         Task<List<GetArticlesViewModel>> GetWithFilltering(string fillterOn, string fillterQuery);
+        Task<PagedList<GetArticlesWithPaginationViewModel>> GetArticlesWithPagination(int pageNumber, int pageSize);
         Task<SaveArticlesViewModel> Add(SaveArticlesViewModel model);
         Task<bool> Update(SaveArticlesViewModel model, int id);
         Task<bool> Delete(int id);
