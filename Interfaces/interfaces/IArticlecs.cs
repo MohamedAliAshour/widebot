@@ -1,25 +1,19 @@
 ﻿using Entities.Models;
-using Interfaces.Base;
-using Interfaces.Helpers;
-using Interfaces.ViewModels.ArticleVM;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Interfaces.pagination;
+using Interfaces.DTOs;
 
 namespace Interfaces.interfaces
 {
-    public interface IArticlecs : ICoreBase
+    public interface IArticlecs 
     {
-        Task<List<GetArticlesViewModel>> GetAll();
-        Task<List<GetArticlesViewModel>> GetWithFilltering(string fillterOn, string fillterQuery);
-        Task<PagedList<GetArticlesWithPaginationViewModel>> GetArticlesWithPagination(int pageNumber, int pageSize);
-        Task<SaveArticlesViewModel> Add(SaveArticlesViewModel model);
-        Task<bool> Update(SaveArticlesViewModel model, int id);
+        Task<List<ArticlesDto>> GetAll();
+        Task<List<ArticlesDto>> GetWithFilltering(string fillterOn, string fillterQuery);
+        Task<PagedList<ArticlesDto>> GetArticlesWithPagination(int pageNumber, int pageSize);
+        Task<ArticlesDto> Add(ArticlesDto model);
+        Task<bool> Update(ArticlesDto model, int id);
         Task<bool> Delete(int id);
         Task<bool> CheckNameExist(string name);
         Article GetById(int id);
-        Task<SaveArticlesViewModel> GetDetailsById(int id);
+        Task<ArticlesDto> GetDetailsById(int id);
     }
 }

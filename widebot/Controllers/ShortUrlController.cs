@@ -1,8 +1,7 @@
-﻿using Interfaces.interfaces;
-using Interfaces.ViewModels.ShortUrlVM;
-using Microsoft.AspNetCore.Http;
+﻿using Entities.Models;
+using Interfaces.DTOs;
+using Interfaces.interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Services.Services;
 
 namespace widebot.Controllers
 {
@@ -18,7 +17,7 @@ namespace widebot.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateShortenUrl([FromBody] SaveShortUrlViewModel model)
+        public async Task<IActionResult> CreateShortenUrl([FromBody] ShortUrlDto model)
         {
             if (string.IsNullOrWhiteSpace(model.LongUrl))
             {
@@ -30,10 +29,25 @@ namespace widebot.Controllers
             return Ok(new
             {
                 LongUrl = result.LongUrl,
-                ShortenedUrl = result.ShortUrl1, // Return the full shortened URL
+                ShortenedUrl = result.ShortUrl1,
                 ShortCode = result.ShortCode
             });
         }
+
+
+        [HttpGet("redirect")]
+        public async Task<IActionResult> RedirectToLongUrl([FromQuery] string shortenUrl)
+        {
+            var decodedUrl = Uri.UnescapeDataString(shortenUrl);
+            var result = await _shortUrlService.GetByShortenUrl(decodedUrl);
+            if (result == null)
+            {
+                return NotFound(new { Message = "Short URL not found." });
+            }
+
+            return Redirect(result.LongUrl);
+        }
+
 
 
         [HttpGet("get-all")]
@@ -46,7 +60,7 @@ namespace widebot.Controllers
         [HttpGet("get-by-short-url/{shortenUrl}")]
         public async Task<IActionResult> GetByShortenUrl(string shortenUrl)
         {
-            var decodedUrl = Uri.UnescapeDataString(shortenUrl); // Decode the URL
+            var decodedUrl = Uri.UnescapeDataString(shortenUrl);
             var result = await _shortUrlService.GetByShortenUrl(decodedUrl);
 
             if (result == null)
@@ -54,17 +68,8 @@ namespace widebot.Controllers
                 return NotFound(new { Message = "Short URL not found." });
             }
 
-            return Ok(new
-            {
-                Id = result.Id,
-                LongUrl = result.LongUrl,
-                ShortenedUrl = result.ShortUrl1,
-                CreatedAt = result.CreatedAt
-            });
+            return Ok(result);
         }
-
-
-
 
         [HttpGet("get-by-shortcode/{shortCode}")]
         public async Task<IActionResult> GetByShortCode(string shortCode)
@@ -74,11 +79,7 @@ namespace widebot.Controllers
             {
                 return NotFound(new { Message = "Short code not found." });
             }
-            return Ok(new
-            {
-                LongUrl = result.LongUrl,
-                ShortenedUrl = result.ShortUrl1
-            });
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
@@ -93,13 +94,10 @@ namespace widebot.Controllers
             return Ok(new { Message = "Short URL deleted successfully." });
         }
 
-
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetShortUrlById(int id)
         {
             var shortUrl = await _shortUrlService.GetById(id);
-
             if (shortUrl == null)
             {
                 return NotFound(new { Message = "Short URL not found." });
@@ -107,7 +105,6 @@ namespace widebot.Controllers
 
             return Ok(shortUrl);
         }
-
 
 
 

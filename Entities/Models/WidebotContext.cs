@@ -30,8 +30,6 @@ public partial class WidebotContext : DbContext
         {
             entity.ToTable("ShortUrl");
 
-            entity.HasIndex(e => e.ShortUrl1, "IX_ShortUrl");
-
             entity.HasIndex(e => e.ShortCode, "IX_ShortUrl_1");
 
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
@@ -40,8 +38,7 @@ public partial class WidebotContext : DbContext
                 .IsRequired()
                 .HasMaxLength(50);
             entity.Property(e => e.ShortUrl1)
-                .IsRequired()
-                .HasMaxLength(50)
+                .HasMaxLength(500)
                 .HasColumnName("ShortUrl");
         });
 

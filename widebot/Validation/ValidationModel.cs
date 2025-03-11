@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Interfaces.Helper
+namespace widebot.Validation
 {
     public class ValidationModel : ActionFilterAttribute
     {

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
-namespace Interfaces.ViewModels.ShortUrlVM
+namespace Interfaces.DTOs
 {
-    public class GetShortUrlViewModel
+    public class ShortUrlDto
     {
         public int Id { get; set; }
 

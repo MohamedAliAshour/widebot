@@ -1,23 +1,14 @@
-﻿using Entities.Models;
-using Interfaces.Base;
-using Interfaces.Helpers;
-using Interfaces.ViewModels.ArticleVM;
-using Interfaces.ViewModels.ShortUrlVM;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Interfaces.DTOs;
 
 namespace Interfaces.interfaces
 {
-    public interface IShortUrl : ICoreBase
+    public interface IShortUrl
     {
-        Task<List<GetShortUrlViewModel>> GetAll();
-        Task<SaveShortUrlViewModel> Add(SaveShortUrlViewModel model);
+        Task<List<ShortUrlDto>> GetAll(); // DTO list for client/UI
+        Task<ShortUrlDto> Add(ShortUrlDto model); // Return created DTO
         Task<bool> Delete(int id);
-        Task<ShortUrl> GetById(int id);
-        Task<ShortUrl> GetByShortenUrl(string id);
-        Task<ShortUrl> GetByShortCode(string id);
+        Task<ShortUrlDto> GetById(int id); // Return DTO instead of entity
+        Task<ShortUrlDto> GetByShortenUrl(string shortenUrl); // Return DTO
+        Task<ShortUrlDto> GetByShortCode(string shortCode); // Return DTO
     }
 }

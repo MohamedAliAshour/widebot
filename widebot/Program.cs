@@ -2,6 +2,7 @@ using Interfaces.interfaces;
 using Microsoft.EntityFrameworkCore;
 using Services.Model;
 using Services.Services;
+using widebot.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,8 @@ builder.Services.AddScoped<IArticlecs, ArticleServices>();
 builder.Services.AddScoped<IShortUrl, ShortUrlServices>();
 
 
+builder.Services.AddAutoMapper(typeof(ObjectMapper));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,6 +32,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.MapControllerRoute(
+    name: "shorturl_redirect",
+    pattern: "{shortCode}",
+    defaults: new { controller = "ShortUrl", action = "RedirectToLongUrl" }
+);
+
 
 app.UseAuthorization();
 

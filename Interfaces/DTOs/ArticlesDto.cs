@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
-namespace Interfaces.ViewModels.ArticleVM
+namespace Interfaces.DTOs
 {
-    public class GetArticlesViewModel
+    public class ArticlesDto
     {
         public int Id { get; set; }
 

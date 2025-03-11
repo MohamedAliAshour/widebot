@@ -1,102 +1,81 @@
-﻿using Entities.Models;
-using Interfaces.Base;
-using Interfaces.Helpers;
+﻿using AutoMapper;
+using Entities.Models;
 using Interfaces.interfaces;
-using Interfaces.ViewModels.ArticleVM;
+using Interfaces.pagination;
 using Microsoft.EntityFrameworkCore;
-using Services.Base;
 using Services.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Interfaces.DTOs;
 
 namespace Services.Services
 {
-    public class ArticleServices : BaseService, IArticlecs
+    public class ArticleServices : IArticlecs
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public ArticleServices(DataContext context) : base(context)
+        public ArticleServices(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<List<GetArticlesViewModel>> GetAll()
+        public async Task<List<ArticlesDto>> GetAll()
         {
-            return await _context.Articles.Select(a => new GetArticlesViewModel
-            {
-                Id = a.Id,
-                Title = a.Title,
-                Content = a.Content,
-                PublishedDate = a.PublishedDate,
-                Tags = a.Tags
-            }).ToListAsync();
+            var articles = await _context.Articles.ToListAsync();
+            return _mapper.Map<List<ArticlesDto>>(articles);
         }
 
-        public async Task<List<GetArticlesViewModel>> GetWithFilltering(string filterOn, string filterQuery)
+        public async Task<List<ArticlesDto>> GetWithFilltering(string filterOn, string filterQuery)
         {
-            var articles = _context.Articles.AsQueryable();
+            var query = _context.Articles.AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(filterOn) && !string.IsNullOrWhiteSpace(filterQuery) && filterOn.Equals("Title", StringComparison.OrdinalIgnoreCase))
+            if (!string.IsNullOrWhiteSpace(filterOn) && !string.IsNullOrWhiteSpace(filterQuery))
             {
-                articles = articles.Where(a => a.Title.Contains(filterQuery));
+                if (filterOn.Equals("Title", StringComparison.OrdinalIgnoreCase))
+                {
+                    query = query.Where(a => a.Title.Contains(filterQuery));
+                }
             }
 
-            return await articles.Select(a => new GetArticlesViewModel
-            {
-                Id = a.Id,
-                Title = a.Title,
-                Content = a.Content,
-                PublishedDate = a.PublishedDate,
-                Tags = a.Tags
-            }).ToListAsync();
+            var filteredArticles = await query.ToListAsync();
+            return _mapper.Map<List<ArticlesDto>>(filteredArticles);
         }
 
-
-        public async Task<PagedList<GetArticlesWithPaginationViewModel>> GetArticlesWithPagination(int pageNumber, int pageSize)
+        public async Task<PagedList<ArticlesDto>> GetArticlesWithPagination(int pageNumber, int pageSize)
         {
-            var query = _context.Articles.Select(a => new GetArticlesWithPaginationViewModel
-            {
-                Id = a.Id,
-                Title = a.Title,
-                Content = a.Content,
-                PublishedDate = a.PublishedDate,
-                Tags = a.Tags
-            });
-
-            return await PagedList<GetArticlesWithPaginationViewModel>.CreateAsync(query, pageNumber, pageSize);
+            var query = _context.Articles.AsQueryable();
+            return await PagedList<ArticlesDto>.CreateAsync(
+                query.Select(a => _mapper.Map<ArticlesDto>(a)),
+                pageNumber,
+                pageSize
+            );
         }
 
-
-
-        public async Task<SaveArticlesViewModel> GetDetailsById(int id)
+        public async Task<ArticlesDto> GetDetailsById(int id)
         {
             var article = await _context.Articles.FindAsync(id);
-            if (article == null) return null;
-
-            return ObjectMapper.Mapper.Map<SaveArticlesViewModel>(article);
+            return article == null ? null : _mapper.Map<ArticlesDto>(article);
         }
 
-        public async Task<SaveArticlesViewModel> Add(SaveArticlesViewModel model)
+        public async Task<ArticlesDto> Add(ArticlesDto model)
         {
-            var article = ObjectMapper.Mapper.Map<Article>(model);
+            var article = _mapper.Map<Article>(model);
             article.PublishedDate = DateTime.UtcNow;
 
             _context.Articles.Add(article);
             await _context.SaveChangesAsync();
 
-            return ObjectMapper.Mapper.Map<SaveArticlesViewModel>(article);
+            return _mapper.Map<ArticlesDto>(article);
         }
 
-        public async Task<bool> Update(SaveArticlesViewModel model, int id)
+        public async Task<bool> Update(ArticlesDto model, int id)
         {
             var article = await _context.Articles.FindAsync(id);
             if (article == null) return false;
 
-            article = ObjectMapper.Mapper.Map(model, article);
+            _mapper.Map(model, article);
             await _context.SaveChangesAsync();
+
             return true;
         }
 
@@ -107,6 +86,7 @@ namespace Services.Services
 
             _context.Articles.Remove(article);
             await _context.SaveChangesAsync();
+
             return true;
         }
 
