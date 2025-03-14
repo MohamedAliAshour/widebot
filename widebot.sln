@@ -5,15 +5,6 @@ VisualStudioVersion = 17.13.35806.99
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "widebot", "widebot\widebot.csproj", "{0AE8CC99-A986-4258-ADAA-EBCD53BBD04B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{EC889018-D297-460C-9395-D0DC3856E173}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Interfaces\Interfaces.csproj", "{C3E7842D-8011-4CAA-BA7D-7A40C345A6AF}"
-	ProjectSection(ProjectDependencies) = postProject
-		{EC889018-D297-460C-9395-D0DC3856E173} = {EC889018-D297-460C-9395-D0DC3856E173}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{658A5059-9998-45F8-B497-DC01B81AA618}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,18 +15,6 @@ Global
 		{0AE8CC99-A986-4258-ADAA-EBCD53BBD04B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AE8CC99-A986-4258-ADAA-EBCD53BBD04B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AE8CC99-A986-4258-ADAA-EBCD53BBD04B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC889018-D297-460C-9395-D0DC3856E173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC889018-D297-460C-9395-D0DC3856E173}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC889018-D297-460C-9395-D0DC3856E173}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC889018-D297-460C-9395-D0DC3856E173}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C3E7842D-8011-4CAA-BA7D-7A40C345A6AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C3E7842D-8011-4CAA-BA7D-7A40C345A6AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C3E7842D-8011-4CAA-BA7D-7A40C345A6AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C3E7842D-8011-4CAA-BA7D-7A40C345A6AF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{658A5059-9998-45F8-B497-DC01B81AA618}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{658A5059-9998-45F8-B497-DC01B81AA618}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{658A5059-9998-45F8-B497-DC01B81AA618}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{658A5059-9998-45F8-B497-DC01B81AA618}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

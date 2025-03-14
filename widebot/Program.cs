@@ -1,15 +1,15 @@
-using Interfaces.interfaces;
 using Microsoft.EntityFrameworkCore;
-using Services.Model;
-using Services.Services;
+using widebot.interfaces;
 using widebot.Mappings;
+using widebot.Models;
+using widebot.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 // Add database connection
-builder.Services.AddDbContext<DataContext>(options =>
+builder.Services.AddDbContext<WidebotContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 

@@ -1,7 +1,6 @@
-﻿using Entities.Models;
-using Interfaces.DTOs;
-using Interfaces.interfaces;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using widebot.DTOs;
+using widebot.interfaces;
 
 namespace widebot.Controllers
 {

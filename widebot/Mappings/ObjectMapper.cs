@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Entities.Models;
-using Interfaces.DTOs;
+using widebot.Models;
+using widebot.DTOs;
 
 
 namespace widebot.Mappings

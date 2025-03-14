@@ -1,6 +1,6 @@
-﻿using Interfaces.interfaces;
-using Microsoft.AspNetCore.Mvc;
-using Interfaces.DTOs;
+﻿using Microsoft.AspNetCore.Mvc;
+using widebot.DTOs;
+using widebot.interfaces;
 using widebot.Validation;
 
 namespace widebot.Controllers
@@ -95,14 +95,6 @@ namespace widebot.Controllers
                 return NotFound();
 
             return NoContent();
-        }
-
-        // Check if article title exists
-        [HttpGet("CheckTitleExist")]
-        public async Task<ActionResult<bool>> CheckTitleExist([FromQuery] string title)
-        {
-            var exists = await _articleService.CheckNameExist(title);
-            return Ok(exists);
         }
     }
 }

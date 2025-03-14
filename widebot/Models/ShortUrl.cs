@@ -2,18 +2,30 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace Entities.Models;
+namespace widebot.Models;
 
+[Table("ShortUrl")]
+[Index("ShortCode", Name = "IX_ShortUrl_1")]
 public partial class ShortUrl
 {
+    [Key]
     public int Id { get; set; }
 
+    [Required]
     public string LongUrl { get; set; }
 
+    [Column("ShortUrl")]
+    [StringLength(500)]
     public string ShortUrl1 { get; set; }
 
+    [Required]
+    [StringLength(50)]
     public string ShortCode { get; set; }
 
+    [Column(TypeName = "datetime")]
     public DateTime CreatedAt { get; set; }
 }

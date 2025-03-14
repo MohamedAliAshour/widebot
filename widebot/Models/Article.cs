@@ -2,18 +2,25 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace Entities.Models;
+namespace widebot.Models;
 
 public partial class Article
 {
+    [Key]
     public int Id { get; set; }
 
+    [Required]
     public string Title { get; set; }
 
+    [Required]
     public string Content { get; set; }
 
     public DateTime PublishedDate { get; set; }
 
+    [Required]
     public string Tags { get; set; }
 }
