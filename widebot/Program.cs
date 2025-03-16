@@ -20,6 +20,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IArticlecs, ArticleServices>();
 builder.Services.AddScoped<IShortUrl, ShortUrlServices>();
+builder.Services.AddScoped<IRedirect, RedirectServices>();
 
 
 builder.Services.AddAutoMapper(typeof(ObjectMapper));
@@ -32,12 +33,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.MapControllerRoute(
-    name: "shorturl_redirect",
-    pattern: "{shortCode}",
-    defaults: new { controller = "ShortUrl", action = "RedirectToLongUrl" }
-);
 
 
 app.UseAuthorization();

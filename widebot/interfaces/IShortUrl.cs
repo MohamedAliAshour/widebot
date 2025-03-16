@@ -4,11 +4,11 @@ namespace widebot.interfaces
 {
     public interface IShortUrl
     {
-        Task<List<ShortUrlDto>> GetAll(); // DTO list for client/UI
-        Task<ShortUrlDto> Add(ShortUrlDto model); // Return created DTO
+        Task<List<ShortUrlGetDto>> GetAll(); // DTO list for client/UI
+        Task<ShortUrlCreateDto> Add(ShortUrlCreateDto model); // Return created DTO
         Task<bool> Delete(int id);
-        Task<ShortUrlDto> GetById(int id); // Return DTO instead of entity
-        Task<ShortUrlDto> GetByShortenUrl(string shortenUrl); // Return DTO
-        Task<ShortUrlDto> GetByShortCode(string shortCode); // Return DTO
+        Task<ShortUrlGetDto> GetById(int id); // Return DTO instead of entity
+        Task<ShortUrlGetDto> GetByShortenUrl(string shortenUrl); // Return DTO
+        Task<ShortUrlGetDto> GetByShortCode(string shortCode); // Return DTO
     }
 }

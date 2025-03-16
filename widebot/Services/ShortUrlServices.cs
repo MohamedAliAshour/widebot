@@ -9,7 +9,7 @@ public class ShortUrlServices : IShortUrl
 {
     private readonly WidebotContext _context;
     private readonly IMapper _mapper;
-    private const string BaseUrl = "https://localhost:5176/"; // Replace with actual domain
+    private const string BaseUrl = "http://localhost:5176/"; // Replace with actual domain
 
     // Inject IMapper through the constructor
     public ShortUrlServices(WidebotContext context, IMapper mapper)
@@ -18,7 +18,7 @@ public class ShortUrlServices : IShortUrl
         _mapper = mapper;
     }
 
-    public async Task<ShortUrlDto> Add(ShortUrlDto model)
+    public async Task<ShortUrlCreateDto> Add(ShortUrlCreateDto model)
     {
         var shortCode = Guid.NewGuid().ToString("N"); // Generates a 6-character code
         var fullShortUrl = $"{BaseUrl}{shortCode}"; // Construct the full short URL
@@ -31,13 +31,13 @@ public class ShortUrlServices : IShortUrl
         _context.ShortUrls.Add(shortUrl);
         await _context.SaveChangesAsync();
 
-        return _mapper.Map<ShortUrlDto>(shortUrl);
+        return _mapper.Map<ShortUrlCreateDto>(shortUrl);
     }
 
-    public async Task<List<ShortUrlDto>> GetAll()
+    public async Task<List<ShortUrlGetDto>> GetAll()
     {
         var shortUrls = await _context.ShortUrls.ToListAsync();
-        return _mapper.Map<List<ShortUrlDto>>(shortUrls);
+        return _mapper.Map<List<ShortUrlGetDto>>(shortUrls);
     }
 
     public async Task<bool> Delete(int id)
@@ -53,21 +53,21 @@ public class ShortUrlServices : IShortUrl
         return true;
     }
 
-    public async Task<ShortUrlDto> GetById(int id)
+    public async Task<ShortUrlGetDto> GetById(int id)
     {
         var shortUrl = await _context.ShortUrls.FirstOrDefaultAsync(s => s.Id == id);
-        return shortUrl == null ? null : _mapper.Map<ShortUrlDto>(shortUrl);
+        return shortUrl == null ? null : _mapper.Map<ShortUrlGetDto>(shortUrl);
     }
 
-    public async Task<ShortUrlDto> GetByShortenUrl(string shortenUrl)
+    public async Task<ShortUrlGetDto> GetByShortenUrl(string shortenUrl)
     {
         var shortUrl = await _context.ShortUrls.FirstOrDefaultAsync(s => s.ShortUrl1 == shortenUrl);
-        return shortUrl == null ? null : _mapper.Map<ShortUrlDto>(shortUrl);
+        return shortUrl == null ? null : _mapper.Map<ShortUrlGetDto>(shortUrl);
     }
 
-    public async Task<ShortUrlDto> GetByShortCode(string shortCode)
+    public async Task<ShortUrlGetDto> GetByShortCode(string shortCode)
     {
         var shortUrl = await _context.ShortUrls.FirstOrDefaultAsync(s => s.ShortCode == shortCode);
-        return shortUrl == null ? null : _mapper.Map<ShortUrlDto>(shortUrl);
+        return shortUrl == null ? null : _mapper.Map<ShortUrlGetDto>(shortUrl);
     }
 }

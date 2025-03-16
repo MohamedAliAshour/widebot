@@ -9,8 +9,20 @@ namespace widebot.Mappings
     {
         public ObjectMapper()
         {
-            CreateMap<Article, ArticlesDto>().ReverseMap();
-            CreateMap<ShortUrl, ShortUrlDto>().ReverseMap();
+            #region Article
+            CreateMap<Article, ArticlesCreateDto>().ReverseMap();
+            CreateMap<Article, ArticlesUpdateDto>().ReverseMap();
+            CreateMap<Article, ArticlesGetDto>().ReverseMap();
+            CreateMap<Article, ArticlesDeleteDto>().ReverseMap();
+            #endregion
+
+
+            #region ShortUrl
+            CreateMap<ShortUrl, ShortUrlCreateDto>().ReverseMap();
+            CreateMap<ShortUrl, ShortUrlUpdateDto>().ReverseMap();
+            CreateMap<ShortUrl, ShortUrlDeleteDto>().ReverseMap();
+            CreateMap<ShortUrl, ShortUrlGetDto>().ReverseMap();
+            #endregion
         }
     }
 }

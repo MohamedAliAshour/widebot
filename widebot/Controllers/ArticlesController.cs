@@ -18,7 +18,7 @@ namespace widebot.Controllers
 
         // Get all articles
         [HttpGet("GetAll")]
-        public async Task<ActionResult<IEnumerable<ArticlesDto>>> GetArticles()
+        public async Task<ActionResult<IEnumerable<ArticlesGetDto>>> GetArticles()
         {
             var articles = await _articleService.GetAll();
             return Ok(articles);
@@ -26,7 +26,7 @@ namespace widebot.Controllers
 
         // Get articles with filtering
         [HttpGet("GetWithFiltering")]
-        public async Task<ActionResult<IEnumerable<ArticlesDto>>> GetArticlesWithFiltering(
+        public async Task<ActionResult<IEnumerable<ArticlesGetDto>>> GetArticlesWithFiltering(
             [FromQuery] string filterOn,
             [FromQuery] string filterQuery)
         {
@@ -54,7 +54,7 @@ namespace widebot.Controllers
 
         // Get a single article by ID
         [HttpGet("{id}")]
-        public async Task<ActionResult<ArticlesDto>> GetArticle(int id)
+        public async Task<ActionResult<ArticlesGetDto>> GetArticle(int id)
         {
             var article = await _articleService.GetDetailsById(id);
             if (article == null)
@@ -66,7 +66,7 @@ namespace widebot.Controllers
         // Create a new article
         [HttpPost]
         [ValidationModel]
-        public async Task<ActionResult<ArticlesDto>> CreateArticle([FromBody] ArticlesDto model)
+        public async Task<ActionResult<ArticlesCreateDto>> CreateArticle([FromBody] ArticlesCreateDto model)
         {
             var createdArticle = await _articleService.Add(model);
             return CreatedAtAction(nameof(GetArticle), new { id = createdArticle.Id }, createdArticle);
@@ -74,7 +74,7 @@ namespace widebot.Controllers
 
         // Update an article
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateArticle(int id, [FromBody] ArticlesDto model)
+        public async Task<IActionResult> UpdateArticle(int id, [FromBody] ArticlesUpdateDto model)
         {
             if (id != model.Id)
                 return BadRequest();

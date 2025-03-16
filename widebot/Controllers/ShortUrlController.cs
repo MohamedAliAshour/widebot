@@ -4,8 +4,8 @@ using widebot.interfaces;
 
 namespace widebot.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class ShortUrlController : ControllerBase
     {
         private readonly IShortUrl _shortUrlService;
@@ -16,7 +16,7 @@ namespace widebot.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateShortenUrl([FromBody] ShortUrlDto model)
+        public async Task<IActionResult> CreateShortenUrl([FromBody] ShortUrlCreateDto model)
         {
             if (string.IsNullOrWhiteSpace(model.LongUrl))
             {
@@ -32,21 +32,6 @@ namespace widebot.Controllers
                 ShortCode = result.ShortCode
             });
         }
-
-
-        [HttpGet("redirect")]
-        public async Task<IActionResult> RedirectToLongUrl([FromQuery] string shortenUrl)
-        {
-            var decodedUrl = Uri.UnescapeDataString(shortenUrl);
-            var result = await _shortUrlService.GetByShortenUrl(decodedUrl);
-            if (result == null)
-            {
-                return NotFound(new { Message = "Short URL not found." });
-            }
-
-            return Redirect(result.LongUrl);
-        }
-
 
 
         [HttpGet("get-all")]

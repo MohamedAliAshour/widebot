@@ -18,13 +18,13 @@ namespace widebot.Services
             _mapper = mapper;
         }
 
-        public async Task<List<ArticlesDto>> GetAll()
+        public async Task<List<ArticlesGetDto>> GetAll()
         {
             var articles = await _context.Articles.ToListAsync();
-            return _mapper.Map<List<ArticlesDto>>(articles);
+            return _mapper.Map<List<ArticlesGetDto>>(articles);
         }
 
-        public async Task<List<ArticlesDto>> GetWithFilltering(string filterOn, string filterQuery)
+        public async Task<List<ArticlesGetDto>> GetWithFilltering(string filterOn, string filterQuery)
         {
             var query = _context.Articles.AsQueryable();
 
@@ -37,26 +37,26 @@ namespace widebot.Services
             }
 
             var filteredArticles = await query.ToListAsync();
-            return _mapper.Map<List<ArticlesDto>>(filteredArticles);
+            return _mapper.Map<List<ArticlesGetDto>>(filteredArticles);
         }
 
-        public async Task<PagedList<ArticlesDto>> GetArticlesWithPagination(int pageNumber, int pageSize)
+        public async Task<PagedList<ArticlesGetDto>> GetArticlesWithPagination(int pageNumber, int pageSize)
         {
             var query = _context.Articles.AsQueryable();
-            return await PagedList<ArticlesDto>.CreateAsync(
-                query.Select(a => _mapper.Map<ArticlesDto>(a)),
+            return await PagedList<ArticlesGetDto>.CreateAsync(
+                query.Select(a => _mapper.Map<ArticlesGetDto>(a)),
                 pageNumber,
                 pageSize
             );
         }
 
-        public async Task<ArticlesDto?> GetDetailsById(int id)
+        public async Task<ArticlesGetDto?> GetDetailsById(int id)
         {
             var article = await _context.Articles.FindAsync(id);
-            return article == null ? null : _mapper.Map<ArticlesDto>(article);
+            return article == null ? null : _mapper.Map<ArticlesGetDto>(article);
         }
 
-        public async Task<ArticlesDto> Add(ArticlesDto model)
+        public async Task<ArticlesCreateDto> Add(ArticlesCreateDto model)
         {
             var article = _mapper.Map<Article>(model);
             article.PublishedDate = DateTime.UtcNow;
@@ -64,10 +64,10 @@ namespace widebot.Services
             _context.Articles.Add(article);
             await _context.SaveChangesAsync();
 
-            return _mapper.Map<ArticlesDto>(article);
+            return _mapper.Map<ArticlesCreateDto>(article);
         }
 
-        public async Task<bool> Update(ArticlesDto model, int id)
+        public async Task<bool> Update(ArticlesUpdateDto model, int id)
         {
             var article = await _context.Articles.FindAsync(id);
             if (article == null) return false;

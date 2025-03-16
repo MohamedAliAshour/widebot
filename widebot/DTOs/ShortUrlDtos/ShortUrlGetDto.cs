@@ -2,7 +2,7 @@
 
 namespace widebot.DTOs
 {
-    public class ShortUrlDto
+    public class ShortUrlGetDto
     {
         public int Id { get; set; }
 

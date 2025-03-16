@@ -1,8 +1,6 @@
-﻿
-
-namespace widebot.DTOs
+﻿namespace widebot.DTOs
 {
-    public class ArticlesDto
+    public class ArticlesDeleteDto
     {
         public int Id { get; set; }
 
