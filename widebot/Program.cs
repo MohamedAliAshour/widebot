@@ -6,24 +6,23 @@ using widebot.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
-// Add database connection
+
+
 builder.Services.AddDbContext<WidebotContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// إضافة Redis Cache
+
 builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = builder.Configuration["Redis:ConnectionString"];
 });
 
-// إضافة HttpClient و WeatherService
+
 builder.Services.AddHttpClient<WeatherService>();
 
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

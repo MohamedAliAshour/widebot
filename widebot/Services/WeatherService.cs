@@ -18,7 +18,7 @@ namespace widebot.Services
             _httpClient = httpClient;
             _cache = cache;
             _configuration = configuration;
-            _apiKey = _configuration["WeatherAPI:ApiKey"]; // Read API key from configuration
+            _apiKey = _configuration["WeatherAPI:ApiKey"]; 
         }
 
         public async Task<string> GetWeatherDataAsync(string city)
@@ -28,10 +28,9 @@ namespace widebot.Services
 
             if (!string.IsNullOrEmpty(cachedData))
             {
-                return cachedData; // ✅ Return cached data if available
+                return cachedData; 
             }
 
-            // ✅ Use Visual Crossing API
             string apiUrl = $"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{city}?key={_apiKey}&unitGroup=metric&include=current";
 
             var response = await _httpClient.GetStringAsync(apiUrl);
