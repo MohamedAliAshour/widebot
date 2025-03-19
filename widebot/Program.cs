@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using widebot.interfaces;
 using widebot.Mappings;
 using widebot.Models;
@@ -12,6 +12,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<WidebotContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// إضافة Redis Cache
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration["Redis:ConnectionString"];
+});
+
+// إضافة HttpClient و WeatherService
+builder.Services.AddHttpClient<WeatherService>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -24,6 +33,10 @@ builder.Services.AddScoped<IRedirect, RedirectServices>();
 
 
 builder.Services.AddAutoMapper(typeof(ObjectMapper));
+
+
+var configuration = builder.Configuration;
+builder.Services.AddSingleton(configuration);
 
 var app = builder.Build();
 
