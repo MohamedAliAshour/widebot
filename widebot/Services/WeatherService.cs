@@ -2,8 +2,9 @@
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using widebot.Configurations;
-using widebot.DTOs.WeatherResponseDtos;
 using widebot.interfaces;
+using widebot.Models;
+
 
 namespace widebot.Services
 {
@@ -31,7 +32,7 @@ namespace widebot.Services
             }
         }
 
-        public async Task<WeatherGetResponseDto> GetWeatherDataAsync(string city)
+        public async Task<WeatherResponse> GetWeatherDataAsync(string city)
         {
             string cacheKey = $"weather-{city.ToLower()}";
             var cachedData = await _cache.GetStringAsync(cacheKey);
@@ -56,10 +57,10 @@ namespace widebot.Services
             return ParseWeatherResponse(response);
         }
 
-        private WeatherGetResponseDto ParseWeatherResponse(string jsonData)
+        private WeatherResponse ParseWeatherResponse(string jsonData)
         {
             var json = JObject.Parse(jsonData);
-            return new WeatherGetResponseDto
+            return new WeatherResponse
             {
                 City = json["address"]?.ToString(),
                 Country = json["resolvedAddress"]?.ToString(),

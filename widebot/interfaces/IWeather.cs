@@ -1,11 +1,10 @@
-﻿using widebot.DTOs;
-using widebot.DTOs.WeatherResponseDtos;
+﻿using widebot.Models;
 
 
 namespace widebot.interfaces
 {
     public interface IWeather
     {
-        Task<WeatherGetResponseDto> GetWeatherDataAsync(string city);
+        Task<WeatherResponse> GetWeatherDataAsync(string city);
     }
 }
