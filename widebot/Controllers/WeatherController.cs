@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using widebot.interfaces;
 using widebot.Services;
 
 namespace widebot.Controllers
@@ -8,9 +9,9 @@ namespace widebot.Controllers
     [ApiController]
     public class WeatherController : ControllerBase
     {
-        private readonly WeatherService _weatherService;
+        private readonly IWeather _weatherService;
 
-        public WeatherController(WeatherService weatherService)
+        public WeatherController(IWeather weatherService)
         {
             _weatherService = weatherService;
         }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using widebot.Configurations;
 using widebot.interfaces;
 using widebot.Mappings;
 using widebot.Models;
@@ -6,11 +7,13 @@ using widebot.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-
-
 builder.Services.AddDbContext<WidebotContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+// Bind WeatherAPI settings using Options Pattern
+builder.Services.Configure<WeatherApiOptions>(
+    builder.Configuration.GetSection("WeatherAPI"));
 
 
 builder.Services.AddStackExchangeRedisCache(options =>
@@ -19,13 +22,16 @@ builder.Services.AddStackExchangeRedisCache(options =>
 });
 
 
-builder.Services.AddHttpClient<WeatherService>();
+
+builder.Services.AddHttpClient<IWeather, WeatherService>(); 
+
 
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<IWeather, WeatherService>();
 builder.Services.AddScoped<IArticlecs, ArticleServices>();
 builder.Services.AddScoped<IShortUrl, ShortUrlServices>();
 builder.Services.AddScoped<IRedirect, RedirectServices>();
