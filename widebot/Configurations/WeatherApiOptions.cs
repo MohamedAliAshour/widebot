@@ -2,7 +2,10 @@
 {
     public class WeatherApiOptions
     {
-        public string ApiKey { get; set; } = string.Empty;
-        public int CacheExpirationInMinutes { get; set; } = 720;
+        public string BaseUrl { get; set; }
+        public string ApiKey { get; set; }
+        public string UnitGroup { get; set; }
+        public string Include { get; set; }
+        public int CacheExpirationInMinutes { get; set; }
     }
 }

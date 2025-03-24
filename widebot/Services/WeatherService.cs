@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using widebot.Configurations;
 using widebot.interfaces;
@@ -20,16 +21,6 @@ namespace widebot.Services
             _cache = cache;
             _options = options.Value;
 
-            // Validate and set defaults if missing
-            if (string.IsNullOrWhiteSpace(_options.ApiKey))
-            {
-                throw new ArgumentNullException(nameof(_options.ApiKey), "API Key is missing in configuration.");
-            }
-
-            if (_options.CacheExpirationInMinutes <= 0)
-            {
-                _options.CacheExpirationInMinutes = 720; // Default to 12 hours
-            }
         }
 
         public async Task<WeatherResponse> GetWeatherDataAsync(string city)
@@ -42,7 +33,9 @@ namespace widebot.Services
                 return ParseWeatherResponse(cachedData);
             }
 
-            string apiUrl = $"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{city}?key={_options.ApiKey}&unitGroup=metric&include=current";
+            // Construct the API URL using the values from appsettings.json
+            string apiUrl = $"{_options.BaseUrl}{city}?key={_options.ApiKey}&unitGroup={_options.UnitGroup}&include={_options.Include}";
+
             var response = await _httpClient.GetStringAsync(apiUrl);
 
             if (!string.IsNullOrEmpty(response))
@@ -57,21 +50,10 @@ namespace widebot.Services
             return ParseWeatherResponse(response);
         }
 
+
         private WeatherResponse ParseWeatherResponse(string jsonData)
         {
-            var json = JObject.Parse(jsonData);
-            return new WeatherResponse
-            {
-                City = json["address"]?.ToString(),
-                Country = json["resolvedAddress"]?.ToString(),
-                CurrentConditions = json["currentConditions"]?["conditions"]?.ToString(),
-                Temperature = json["currentConditions"]?["temp"]?.ToString(),
-                WindSpeed = json["currentConditions"]?["windspeed"]?.ToString(),
-                WindDirection = json["currentConditions"]?["winddir"]?.ToString(),
-                Sunrise = json["currentConditions"]?["sunrise"]?.ToString(),
-                Sunset = json["currentConditions"]?["sunset"]?.ToString(),
-                MoonPhase = json["currentConditions"]?["moonphase"]?.ToString(),
-            };
+            return JsonConvert.DeserializeObject<WeatherResponse>(jsonData);
         }
     }
 }

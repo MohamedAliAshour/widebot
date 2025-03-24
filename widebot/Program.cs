@@ -21,8 +21,6 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = builder.Configuration["Redis:ConnectionString"];
 });
 
-
-
 builder.Services.AddHttpClient<IWeather, WeatherService>(); 
 
 
